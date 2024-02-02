@@ -1,0 +1,38 @@
+server:
+  port: 9000
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: service-one
+          uri: lb://SERVICE-ONE
+          predicates:
+            - Path=/one/**
+
+        - id: service-two
+          uri: lb://SERVICE-TWO
+          predicates:
+            - Path=/two/**
+
+
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/
+    register-with-eureka: true
+
